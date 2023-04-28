@@ -1,0 +1,39 @@
+.data
+
+#declare data type
+A: .word 15
+B: .word 10
+C: .word 5
+D: .word 2
+E: .word 18
+F: .word -3
+Z: .word 0
+
+.text
+
+main:
+   # load word into registers
+    lw t0, A   # A=15
+    lw t1, B   # B=10
+    lw t2, C    # C=5
+    lw t3, D    # D=2
+    lw t4, E   # E=18
+    lw t5, F   # F=-3
+
+    #Z = (A-B) + (C*D) + (E-F) - (A/C)
+    sub t1, t0, t1 # calculate (A-B)
+    mul t3, t2, t3 # calculate (C*D)
+    sub t4, t4, t5 # calculate (E-F)
+    div t0, t0, t2 # calculate (A/C)
+    
+    # calculate Z
+    add t1, t1, t3
+    sub t4, t4, t0
+    add t1, t1, t4 
+    
+    # store result Z in memory
+    sw t1, Z, t6
+
+    li a7, 1	# system call code for print_int  
+    lw a0, Z	# integer to print
+    ecall		# print it

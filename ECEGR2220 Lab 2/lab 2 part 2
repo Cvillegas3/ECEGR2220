@@ -1,0 +1,66 @@
+.data
+A: .word 15
+B: .word 15
+C: .word 10
+Z: .word 0
+.text
+main:
+
+#load registers
+lw a0, A
+lw a1, B
+lw a2, C
+lw a3, Z
+
+#perform logical comparison
+addi tp, zero, 5 # set register = 5. Used to compare
+slt t0 , a0, a1 #if A < B then, t0 = 1. Else t0 = 0
+slt t1, tp, a2 #if C > 5 (tp) then , t1 = 1. Else t1 = 0
+and t2, t0, t1 #set t2 to bitwise t0 and t1 (if both equal 1)
+beq t2, zero, elseif #branch to elsif, if t2 = zero.
+addi a3, zero, 1 # set z = 1
+j switch #sets z=1 to z=-1
+
+#else is( A > B || ((C+1) == 7 ))
+elseif:
+slt t3, a1, a0 #if A > B then, t3 = 1. Else t3 = 0
+addi t4, a2, 1 # t4 has the value c+1
+addi t4, t4, -7 # t4 has the value c+1-7
+beq t4, zero, setto0 # if c + 1 - 7 = 0, branch to setto0 (set statement as false (0))
+j else
+
+setto0:
+slti t4, t4, 1 # sets c + 1 -7 = to false
+or t5, t4, t3 
+beq t5 , zero, else
+
+addi a3, zero, 2 # set z = 2
+j switch
+else:
+addi a3, zero, 3 # set z = 3
+
+#changes value to negative (switch)
+switch:
+addi s2, zero, 1
+addi s3, zero, 2
+addi s4, zero, 3
+beq a3, s2, case1
+beq a3, s3, case2
+beq a3, s4 case3
+
+#case statements
+case1:
+addi s5, zero, -1
+j end
+case2:
+addi s5, zero, -2
+j end
+case3:
+addi s5, zero, -3
+end:
+sw s5, Z, a4 # stores cobntetns of s5 into the memory address of Z.
+#end of code
+    li a7, 1	# system call code for print_int  
+    lw a0, Z	# integer to print
+    ecall		# print it
+
