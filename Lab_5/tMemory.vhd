@@ -3,7 +3,7 @@
 -- Test Bench for LAB #5 - Memory and Register Bank
 --
 --------------------------------------------------------------------------------
-LIBRARY ieee;
+ LIBRARY ieee;
 Use ieee.std_logic_1164.all;
 Use ieee.numeric_std.all;
 Use ieee.std_logic_unsigned.all;
